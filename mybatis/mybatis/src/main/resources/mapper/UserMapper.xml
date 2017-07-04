@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <!-- 推荐写为类似完全限定名 -->
+<mapper namespace="com.kaishengit.entity.UserMapper">
+
+	<!-- 
+		根据Id查询User对象
+		id: 类似方法名
+		parameterType : 参数类型（可选）
+		resultType : 返回值类型(可选) 
+	-->
+	 <select id="findAll" resultType="User">
+	 	select * from t_user
+	 </select>
+	  
+	  
+</mapper>
+  
+  
