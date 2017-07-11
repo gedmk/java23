@@ -3,7 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   <!-- 推荐写为类似完全限定名 -->
-<mapper namespace="com.kaishengit.entity.UserMapper">
+<mapper namespace="com.kaishengit.mapper.UserMapper">
+
+	<sql id="allColumns">
+		id,user_name,address,password,account_id
+	</sql>
 
 	<!-- 
 		根据Id查询User对象
@@ -11,10 +15,58 @@
 		parameterType : 参数类型（可选）
 		resultType : 返回值类型(可选) 
 	-->
-	 <select id="findAll" resultType="User">
+	
+	<select id="findByUserNameAndPassword" resultType="user">
+		select 
+			<include refid="allColumns"></include>
+		from
+		 	t_user
+		where
+			user_name= #{arg0} and password= #{arg1}
+	</select>
+	
+	
+	<insert id="batchSave" parameterType="list" >
+		insert into t_user (user_name,address,password,account_id)
+		values 
+		<foreach collection="list" item="user" separator=",">
+    		(#{user.userName},#{user.address},#{user.password},#{user.accountId})
+		</foreach>
+	</insert>
+	
+	
+	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+		insert into t_user (user_name,address,password,account_id) values (#{userName},#{address},#{password},#{accountId})	
+	</insert>
+	
+	
+	<select id="findUserById" resultType="User" parameterType="int">
+		select 
+			<include refid="allColumns"></include>
+		from 
+			t_user
+		where 
+			id = #{id}		
+	</select>
+	
+	<!--  <select id="findAll" resultType="User">
 	 	select * from t_user
-	 </select>
+	 </select> -->
 	  
+	  <select id="findUserAndAccount" resultType="User">
+		SELECT
+			t.id,
+			user_name,
+			`password`,
+			address,
+			account_id as `account.id`,
+			`name` as `account.name`
+		FROM
+			t_user AS t,
+			t_account AS a
+		WHERE
+			t.account_id = a.id
+	  </select>
 	  
 </mapper>
   

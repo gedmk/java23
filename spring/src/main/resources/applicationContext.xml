@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
+
+    <!--自动扫描-->
+    <context:component-scan base-package="com.kaishengit"/>
+    <!--读取配置文件-->
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <!--jdbc的数据库链接池配置 destroy-method="close"表示销毁方法-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <!--配置jdbc模板-->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--JDBC事物管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--基于注解的事物-->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+
+    <!--<bean id="application" class="com.kaishengit.service.Application"/>
+    <bean id="aopAspect" class="com.kaishengit.aop.AopAspect"/>
+    <aop:config>
+        <aop:aspect ref="aopAspect">
+
+            <aop:pointcut id="pointcut" expression="execution(* com.kaishengit.service..*.*(..))"/>
+         &lt;!&ndash;   &lt;!&ndash;前置通知&ndash;&gt;
+            <aop:before method="before" pointcut-ref="pointcut"/>
+            &lt;!&ndash; 后置通知&ndash;&gt;
+            <aop:after-returning method="afterReturningAdvice" pointcut-ref="pointcut" returning="obj"/>
+            &lt;!&ndash; 最终通知&ndash;&gt;
+            <aop:after method="afterAdvice" pointcut-ref="pointcut"/>&ndash;&gt;
+            &lt;!&ndash;环绕通知&ndash;&gt;
+            <aop:around method="aroundAdvice" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
+-->
+
+
+</beans>

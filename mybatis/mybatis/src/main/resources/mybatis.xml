@@ -12,6 +12,7 @@
 	<!-- 注册别名 -->
 	<typeAliases>
 		<typeAlias type="com.kaishengit.entity.User" alias="User" />
+		<typeAlias type="com.kaishengit.entity.Account" alias="Account"/>
 	</typeAliases>
 
 	<environments default="dev">
